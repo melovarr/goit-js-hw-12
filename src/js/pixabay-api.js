@@ -5,52 +5,60 @@ import { createGallery, newLoader } from "./render-functions";
 const API_KEY = "49624425-89d18311d8423019c2709bd63";
 
 const nameInput = document.querySelector(".js-name-input");
+const fetchPostBtn = document.querySelector(".next-page-btn");
 
-
-
-// 
-// function getImagesByQuery(query){
-// return nameInput.value;
+const formInput = document.querySelector(".js-form");
+let pageNumber = 1;
+let picQuantity = 0;
+// picQuantity();
+// async function picQuantity(quantity){
+//     try {const limitNumber = await axios(`https://pixabay.com/api/?key=${API_KEY}`);
+//     console.log(limitNumber.data.totalHits);}
+//     catch(error){
+//         showMessage(error.message, "#ef4040")
+//     }
 // };
 
- export function getImagesByQuery(images) {
-    // event.preventDefault();
-    // console.log(nameInput.value);
-    
-    axios(`https://pixabay.com/api/?key=${API_KEY}&q=${nameInput.value}&image_type=photo&orientation=horizontal&safesearch=true&per_page=198`)
-    .then(response => {
+ export async function getImagesByQuery(images) {
+    try {const response = await axios(`https://pixabay.com/api/?key=${API_KEY}&q=${nameInput.value}&image_type=photo&orientation=horizontal&safesearch=true&per_page=115&page=${pageNumber}`)
+    picQuantity = response.data.totalHits;
+    console.log(picQuantity);
+    console.log(response.data);
         if (!response.data.hits.length) {
-            // errorVision()
-            iziToast.show({
-                title: "Sorry, there are no images matching your search query. Please try again!",
-                backgroundColor: "#ef4040",
-                titleColor: "#fff",
-                titleSize: "16px",
-                position: "topRight",
-                // iconURL: '/src/public/ellipse.png',
-                // width: '300px',
-            });
-            return;
+            showMessage("Sorry, there are no images matching your search query. Please try again!", "#ef4040");
+            formInput.reset();
+            return response.data.hits;
         }
-        createGallery(response.data.hits)
-        // console.log(response.data.hits);
-        // gallery.innerHTML = galleryDatalist(response.data.hits);
+        createGallery(response.data.hits);
+        pageNumber += 1;
+        if (pageNumber > 1) {
+            fetchPostBtn.display = "block";
+        }
         const images = response.data.hits;
-        // gallery.innerHTML = galleryDatalist(galleryList);
-    })
-    .catch(error => iziToast.show({
-                title: `${error.message}`,
-                backgroundColor: "#ef4040",
-                titleColor: "#fff",
-                titleSize: "16px",
-                position: "topRight",
-                // width: "300px",
-            }))
-            .finally(() => {
-                newLoader("none");
-            });
-};
+    }
+    catch (error) {
+        showMessage(error.message, "#ef4040")
+    }
+    finally {
+        newLoader("none");
+    };
 
+ }
+
+
+
+
+export function showMessage(textMessage, backColor) {
+    iziToast.show({
+        title: `${textMessage}`,
+        backgroundColor: `${backColor}`,
+        titleColor: "#fff",
+        titleSize: "16px",
+        position: "topRight",
+        // iconURL: '/src/public/ellipse.png',
+        // width: '300px',
+    })
+}
 // function errorVision() {
 //     iziToast.show({
 //         title: `${error.message}`,

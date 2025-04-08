@@ -3,8 +3,12 @@ import SimpleLightBox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 // import getImagesByQuery from "./pixabay-api"
 
-
+const galleryListing = document.querySelector(".next-page-btn");
 // createGallery(images)
+let page = 1;
+// Controls the number of items in the group
+let perPage = 12;
+
 
 export function createGallery(arr) {
         const galleryMarcup =  arr.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => { return `<li class="gallery-item">
@@ -18,8 +22,10 @@ export function createGallery(arr) {
     </ul></a>
     </li>
     `}).join("");
+    // galleryListing.style.display = "block";
     clearGallery(galleryMarcup)
 };
+// galleryListing.addEventListener("click", async  )
 
 export function clearGallery(clearString = "") {
     const gallery = document.querySelector(".gallery");
@@ -40,5 +46,5 @@ function runLightbox() {
 
   export function newLoader(style) {
     const loader = document.querySelector(".loader");
-    loader.style.displey = style; 
+    loader.style.display = style; 
   }
