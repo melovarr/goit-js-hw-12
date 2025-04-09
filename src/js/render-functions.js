@@ -1,13 +1,6 @@
 
 import SimpleLightBox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-// import getImagesByQuery from "./pixabay-api"
-
-const galleryListing = document.querySelector(".next-page-btn");
-// createGallery(images)
-let page = 1;
-// Controls the number of items in the group
-let perPage = 12;
 
 
 export function createGallery(arr) {
@@ -22,15 +15,15 @@ export function createGallery(arr) {
     </ul></a>
     </li>
     `}).join("");
-    // galleryListing.style.display = "block";
     clearGallery(galleryMarcup)
 };
-// galleryListing.addEventListener("click", async  )
+
 
 export function clearGallery(clearString = "") {
     const gallery = document.querySelector(".gallery");
-gallery.innerHTML = clearString;
+gallery.insertAdjacentHTML("beforeend", clearString);
 if (clearString) {
+    
     runLightbox();
 }
 };
