@@ -6,7 +6,7 @@ const API_KEY = "49624425-89d18311d8423019c2709bd63";
 
 const nameInput = document.querySelector(".js-name-input");
 const nextPageBtn = document.querySelector(".next-page-btn");
-
+const countDisplay = document.getElementById('imageCount');
 const formInput = document.querySelector(".js-form");
 let pageNumber = 1;
 let picQuantity = 0;
@@ -15,11 +15,13 @@ const perPage = 15;
 export async function getImagesByQuery(images) {
     try {const response = await axios(`https://pixabay.com/api/?key=${API_KEY}&q=${nameInput.value}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${pageNumber}`)
     picQuantity = response.data.totalHits;
+    countDisplay.textContent = picQuantity;
     console.log(picQuantity);
     // console.log(response.data.hits);
         if (!response.data.hits.length) {
             showMessage("Sorry, there are no images matching your search query. Please try again!", "#ef4040");
             formInput.reset();
+            nextPageBtn.style.display = "none";
             return response.data.hits;
         }
         createGallery(response.data.hits);
@@ -39,7 +41,7 @@ export async function getImagesByQuery(images) {
         }
         if (pageNumber > Math.ceil(picQuantity / perPage)){
             nextPageBtn.style.display = "none";
-            showMessage("We're sorry, but you've reached the end of search results.", "#ef4040");
+            showMessage("That's all images.", "#e76f6f");
             pageNumber = 1;
         }
         const images = response.data.hits;
@@ -67,7 +69,7 @@ export function showMessage(textMessage, backColor) {
         titleColor: "#fff",
         titleSize: "16px",
         position: "topRight",
-        // iconURL: '/src/public/ellipse.png',
+        iconURL: './Group (1).svg',
         // width: '300px',
     })
 };

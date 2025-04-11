@@ -6,6 +6,7 @@ import { newLoader, clearGallery } from "./js/render-functions";
 const formInput = document.querySelector(".js-form");
 formInput.addEventListener("submit", submitHandler);
 const galleryListing = document.querySelector(".next-page-btn");
+
 let images = "";
 
 function submitHandler(event) {
